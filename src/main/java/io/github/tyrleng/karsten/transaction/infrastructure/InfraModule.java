@@ -4,7 +4,7 @@ import dagger.Binds;
 import dagger.Module;
 import io.github.tyrleng.karsten.transaction.application.EventPublisher;
 import io.github.tyrleng.karsten.transaction.application.Repository;
-import io.github.tyrleng.karsten.transaction.application.Requester;
+import io.github.tyrleng.karsten.transaction.application.RequestPublisher;
 import io.github.tyrleng.karsten.transaction.infrastructure.send.EventPublishSender;
 import io.github.tyrleng.karsten.transaction.infrastructure.send.RequestSender;
 
@@ -21,5 +21,5 @@ public interface InfraModule {
     EventPublisher bindEventPublisher (EventPublishSender eventPublishSender);
 
     @Binds
-    Requester bindRequestPublisher (RequestSender requestSender);
+    RequestPublisher bindRequestPublisher (RequestSender requestSender);
 }

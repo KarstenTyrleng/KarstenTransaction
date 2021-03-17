@@ -6,7 +6,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import io.github.tyrleng.finance.Money;
 import io.github.tyrleng.karsten.transaction.application.TransactionService;
-import io.github.tyrleng.karsten.transaction.domain.command.incoming.CreateTransactionCommand;
+import io.github.tyrleng.karsten.transaction.domain.incoming.CreateTransactionCommand;
 import io.github.tyrleng.karsten.transaction.domain.entity.Account;
 
 import javax.inject.Inject;
@@ -38,7 +38,7 @@ public class RequestReceiver {
             String commandString = rootNode.get("command").asText();
             switch (commandString) {
                 case "createTransaction":
-                    CreateTransactionCommand command = new CreateTransactionCommand();
+                    CreateTransactionCommand command =  new CreateTransactionCommand();
                     ArrayNode creditArray = (ArrayNode)rootNode.get("credit");
                     ArrayNode debitArray = (ArrayNode)rootNode.get("debit");
                     for (JsonNode creditAccountAndAmount : creditArray) {

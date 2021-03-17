@@ -1,25 +1,25 @@
 package io.github.tyrleng.karsten.transaction.application;
 
 import io.github.tyrleng.karsten.transaction.domain.Transaction;
-import io.github.tyrleng.karsten.transaction.domain.command.incoming.CreateTransactionCommand;
+import io.github.tyrleng.karsten.transaction.domain.incoming.CreateTransactionCommand;
 import io.github.tyrleng.karsten.transaction.domain.event.publish.TransactionCreatedEvent;
+import io.github.tyrleng.karsten.transaction.domain.outgoing.Request;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
-import java.util.ArrayList;
 
 @Singleton
 public class TransactionService {
 
     Repository repository;
     EventPublisher eventPublisher;
-    Requester requester;
+    RequestPublisher requestPublisher;
 
     @Inject
-    public TransactionService (Repository repository, EventPublisher eventPublisher, Requester requester) {
+    public TransactionService (Repository repository, EventPublisher eventPublisher, RequestPublisher requestPublisher) {
         this.repository = repository;
         this.eventPublisher = eventPublisher;
-        this.requester = requester;
+        this.requestPublisher = requestPublisher;
     }
 
     public String createTransaction (CreateTransactionCommand command) {

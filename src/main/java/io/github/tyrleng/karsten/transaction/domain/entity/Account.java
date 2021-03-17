@@ -3,15 +3,18 @@ package io.github.tyrleng.karsten.transaction.domain.entity;
 import io.github.tyrleng.finance.Money;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 
 public class Account {
 
-    public Account (int accountCode) {
+    public Account (int accountCode, String accountName, AccountType accountType) {
         this.accountCode = accountCode;
+        this.accountName = accountName;
+        this.accountType = accountType;
     }
 
     int accountCode;
+    String accountName;
+    AccountType accountType;
 
     Money amountToBeDebited;
     Money amountToBeCredited;

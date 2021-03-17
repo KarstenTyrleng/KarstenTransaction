@@ -1,12 +1,10 @@
-package io.github.tyrleng.karsten.transaction.domain.command.incoming;
+package io.github.tyrleng.karsten.transaction.domain.incoming;
 
 import io.github.tyrleng.finance.Money;
 import io.github.tyrleng.karsten.transaction.domain.entity.Account;
 import lombok.Getter;
-import lombok.RequiredArgsConstructor;
 
 import java.util.HashMap;
-import java.util.List;
 
 public class CreateTransactionCommand {
 

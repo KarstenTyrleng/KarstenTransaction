@@ -30,7 +30,6 @@ public class TransactionConverter implements JsonProvider {
     @Override
     public String provideDomainObjectAsJson() throws JsonProcessingException {
         ObjectMapper mapper = new ObjectMapper();
-
         SimpleModule module = new SimpleModule();
         module.addSerializer(Transaction.class, new TransactionSerializer());
         mapper.registerModule(module);

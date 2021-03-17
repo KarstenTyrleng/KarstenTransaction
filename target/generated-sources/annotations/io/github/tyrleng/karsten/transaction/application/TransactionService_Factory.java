@@ -1,6 +1,7 @@
 package io.github.tyrleng.karsten.transaction.application;
 
 import dagger.internal.Factory;
+
 import javax.annotation.processing.Generated;
 import javax.inject.Provider;
 
@@ -17,10 +18,10 @@ public final class TransactionService_Factory implements Factory<TransactionServ
 
   private final Provider<EventPublisher> eventPublisherProvider;
 
-  private final Provider<Requester> requesterProvider;
+  private final Provider<RequestPublisher> requesterProvider;
 
   public TransactionService_Factory(Provider<Repository> repositoryProvider,
-      Provider<EventPublisher> eventPublisherProvider, Provider<Requester> requesterProvider) {
+      Provider<EventPublisher> eventPublisherProvider, Provider<RequestPublisher> requesterProvider) {
     this.repositoryProvider = repositoryProvider;
     this.eventPublisherProvider = eventPublisherProvider;
     this.requesterProvider = requesterProvider;
@@ -32,12 +33,12 @@ public final class TransactionService_Factory implements Factory<TransactionServ
   }
 
   public static TransactionService_Factory create(Provider<Repository> repositoryProvider,
-      Provider<EventPublisher> eventPublisherProvider, Provider<Requester> requesterProvider) {
+      Provider<EventPublisher> eventPublisherProvider, Provider<RequestPublisher> requesterProvider) {
     return new TransactionService_Factory(repositoryProvider, eventPublisherProvider, requesterProvider);
   }
 
   public static TransactionService newInstance(Repository repository, EventPublisher eventPublisher,
-      Requester requester) {
-    return new TransactionService(repository, eventPublisher, requester);
+      RequestPublisher requestPublisher) {
+    return new TransactionService(repository, eventPublisher, requestPublisher);
   }
 }

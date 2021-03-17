@@ -1,7 +1,7 @@
 package io.github.tyrleng.karsten.transaction.domain;
 
 import io.github.tyrleng.finance.Money;
-import io.github.tyrleng.karsten.transaction.domain.command.incoming.CreateTransactionCommand;
+import io.github.tyrleng.karsten.transaction.domain.incoming.CreateTransactionCommand;
 import io.github.tyrleng.karsten.transaction.domain.entity.Account;
 import lombok.Getter;
 

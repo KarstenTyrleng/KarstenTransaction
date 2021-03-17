@@ -50,6 +50,7 @@ public class MessageLoop {
             pubSocket.bind("tcp://localhost:5001");
             syncSocket.bind("tcp://localhost:5002");
 
+            // bind to Account's IP address
             requestSocket.bind("tcp://localhost:5010");
             subSocket.connect("tcp://localhost:5011");
 
@@ -95,7 +96,7 @@ public class MessageLoop {
                         EventPublishSender.PubEnvelope envelope = pubStack.pop();
                         System.out.println("Publishing");
                         pubSocket.sendMore(envelope.getTopic());
-                        pubSocket.send(envelope.getContents().getBytes(StandardCharsets.UTF_8)  );
+                        pubSocket.send(envelope.getContents());
                     }
                 }
 //                if (!pubStack.isEmpty()) {
