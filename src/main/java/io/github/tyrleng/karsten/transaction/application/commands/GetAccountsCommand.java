@@ -1,4 +1,6 @@
-package io.github.tyrleng.karsten.transaction.domain.outgoing;
+package io.github.tyrleng.karsten.transaction.application.commands;
+
+import io.github.tyrleng.karsten.transaction.domain.outgoing.Request;
 
 public class GetAccountsCommand implements Request {
 

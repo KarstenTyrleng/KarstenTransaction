@@ -4,23 +4,14 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.github.tyrleng.karsten.transaction.application.RequestServicerImpl;
-import io.github.tyrleng.karsten.transaction.application.TransactionService;
 
 import javax.inject.Inject;
-import java.util.ArrayList;
-import java.util.List;
 
 public class ReplyReceiver {
 
-//    public static List<AwaitingReply> awaitingReplyStack;
-//
-//    public static class AwaitingReply {
-//        public AwaitingReply(int sentMessageId) {
-//
-//        }
-//    }
 
     RequestServicerImpl requestServicer;
+
 
     @Inject
     public ReplyReceiver (RequestServicerImpl requestServicer) {
@@ -35,10 +26,14 @@ public class ReplyReceiver {
             JsonNode requestTypeNode = rootNode.get("requestType");
             String requestType = requestTypeNode.asText();
 
+            JsonNode requestIdNode = rootNode.get("requestId");
+            int requestId = requestIdNode.asInt();
+
             switch (requestType) {
                 case "getAccount": {
                     // interpret the Json according to what the command expects to be returned.
                     // find the request id then call RequestServicerImpl to
+                    requestServicer.receiveGetAccountsIdReply(requestId,null);
                 }
             }
 

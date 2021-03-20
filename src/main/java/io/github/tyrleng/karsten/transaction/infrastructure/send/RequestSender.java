@@ -27,23 +27,19 @@ public class RequestSender implements RequestPublisher {
     private int requestId;
 
     @Override
-    public void makeRequest(Request request, int requesterId) {
+    public void makeRequest(Request request, int requestId) {
         try {
             ObjectMapper mapper = new ObjectMapper();
             SimpleModule module = new SimpleModule();
             module.addSerializer(Request.class, new RequestSerializer());
             mapper.registerModule(module);
-            requestId = requesterId;
+            this.requestId = requestId;
             String requestString = mapper.writerWithDefaultPrettyPrinter().writeValueAsString(request);
             MessageLoop.requestSendStack.push(requestString);
         }
         catch (JsonProcessingException e) {
             e.printStackTrace();
         }
-    }
-
-    public void handleReply(String replyString) {
-
     }
 
     private class RequestSerializer extends StdSerializer<Request> {
@@ -65,9 +61,7 @@ public class RequestSender implements RequestPublisher {
                 jsonGenerator.writeStringField("requestType", "query");
             }
             jsonGenerator.writeStringField("topic", request.getTopic());
-
             jsonGenerator.writeNumberField("requestId", requestId);
-
             jsonGenerator.writeEndObject();
         }
     }
