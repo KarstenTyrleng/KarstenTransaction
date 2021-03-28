@@ -1,17 +1,14 @@
 package io.github.tyrleng.karsten.transaction.application;
 
-import io.github.tyrleng.karsten.transaction.domain.entity.Account;
 import io.github.tyrleng.karsten.transaction.domain.outgoing.Request;
 import io.github.tyrleng.karsten.transaction.domain.outgoing.RequestServicer;
 
 import javax.inject.Inject;
-import javax.inject.Singleton;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Random;
 import java.util.function.Consumer;
 
-@Singleton
 public class RequestServicerImpl implements RequestServicer {
 
     RequestPublisher requestPublisher;
@@ -27,7 +24,10 @@ public class RequestServicerImpl implements RequestServicer {
         return new Random().nextInt(100);
     }
 
-//    ---
+    /**
+     * Getting Account Ids at the start of the program's lifespan.
+     * Callback defined by the domain object receiving the reply, which in this case, is Transaction Service.
+     */
 
     HashMap<Integer, Consumer<ArrayList<Integer>>> accountToCallbackMap;
 

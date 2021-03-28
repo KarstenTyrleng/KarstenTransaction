@@ -13,15 +13,12 @@ import java.util.function.BiConsumer;
 public class Account {
 
     @Inject
-    public Account (int accountCode, String accountName, AccountType accountType) {
-        this.accountCode = accountCode;
-        this.accountName = accountName;
-        this.accountType = accountType;
+    public Account (int accountId) {
+        this.accountId = accountId;
     }
 
-    int accountCode;
-    String accountName;
-    AccountType accountType;
+    @Setter
+    private int accountId;
 
     Money amountToBeDebited;
     Money amountToBeCredited;

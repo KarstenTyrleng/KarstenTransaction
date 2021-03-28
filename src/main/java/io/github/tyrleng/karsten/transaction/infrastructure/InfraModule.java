@@ -18,8 +18,10 @@ public interface InfraModule {
     Repository bindRepository (RepositoryImpl repository);
 
     @Binds
+    @Singleton
     EventPublisher bindEventPublisher (EventPublishSender eventPublishSender);
 
     @Binds
+    @Singleton
     RequestPublisher bindRequestPublisher (RequestSender requestSender);
 }

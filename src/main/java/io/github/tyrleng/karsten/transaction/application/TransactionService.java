@@ -31,13 +31,6 @@ public class TransactionService {
         getAccounts();
     }
 
-    public String createTransaction (CreateTransactionCommand command) {
-        Transaction transaction = new Transaction(command);
-        repository.saveTransaction(transaction);
-        eventPublisher.publish(new TransactionCreatedEvent(transaction));
-        return "ok";
-    }
-
     /**
      * Does the population of Account IDs for accounts.
      * Has to be done here because making Account do the population by itself would be awkward.
@@ -50,5 +43,11 @@ public class TransactionService {
         Account.setAccountIdList(list);
     };
 
+    public String createTransaction (CreateTransactionCommand command) {
+        Transaction transaction = new Transaction(command);
+        repository.saveTransaction(transaction);
+        eventPublisher.publish(new TransactionCreatedEvent(transaction));
+        return "ok";
+    }
 
 }
