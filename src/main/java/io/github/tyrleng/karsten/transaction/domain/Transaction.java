@@ -8,6 +8,7 @@ import lombok.Getter;
 import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.Set;
+import java.util.UUID;
 
 /**
  * Main Aggregate of this Bounded Context.
@@ -18,7 +19,7 @@ public class Transaction {
     @Getter private HashMap<Account,Money> accountMoneyCredited;
     @Getter private HashMap<Account,Money> accountMoneyDebited;
 
-    @Getter private int id;
+    @Getter private UUID id;
     @Getter private LocalDate dateCreated;
 
     public Transaction (CreateTransactionCommand command) {
@@ -26,11 +27,8 @@ public class Transaction {
         this.accountMoneyDebited = command.getAccountsDebited();
         checkAccountsValid();
         checkCreditDebitAmountsBalance();
-        id = 1;
+        id = UUID.randomUUID();
         dateCreated = LocalDate.now();
-
-        // add id
-        // add date created
     }
 
     private void checkAccountsValid () {

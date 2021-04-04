@@ -1,4 +1,4 @@
-package io.github.tyrleng.karsten.transaction.infrastructure;
+package io.github.tyrleng.karsten.transaction.infrastructure.repository;
 
 import io.github.tyrleng.karsten.transaction.application.Repository;
 import io.github.tyrleng.karsten.transaction.domain.Transaction;

@@ -1,6 +1,8 @@
 package io.github.tyrleng.karsten.transaction.infrastructure;
 
 import dagger.internal.Factory;
+import io.github.tyrleng.karsten.transaction.infrastructure.repository.RepositoryImpl;
+
 import javax.annotation.processing.Generated;
 
 @Generated(
