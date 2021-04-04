@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="io.github.tyrleng.karsten.transaction.infrastructure.repository.TransactionMapper">
+
+    <insert id="createTransactionBase" parameterType="transaction">
+        INSERT INTO TRANSACTIONS VALUES (#{id}, #{dateCreated})
+    </insert>
+
+    <insert id="createTransactionSide" parameterType="map">
+        INSERT INTO TRANSACTION_SIDE VALUES (#{transactionId}, #{type}, #{accountId}, #{money})
+    </insert>
+
+    <select id="getAllTransactionCreditSide" parameterType="uuid" resultType="transactionSide">
+        SELECT ACCOUNT_ID as accountId, MONEY  FROM TRANSACTION_SIDE WHERE TRANSACTION_ID = #{uuid} AND TYPE='CREDIT'
+    </select>
+
+    <select id="getAllTransactionDebitSide" parameterType="uuid" resultType="transactionSide">
+        SELECT ACCOUNT_ID as accountId, MONEY  FROM TRANSACTION_SIDE WHERE TRANSACTION_ID = #{uuid} AND TYPE='DEBIT'
+    </select>
+
+    <select id="getTransaction" parameterType="uuid" resultType="transaction">
+        SELECT TRANSACTION_ID AS id, TRANSACT_DATE AS dateCreated FROM TRANSACTIONS WHERE TRANSACTION_ID=#{uuid}
+    </select>
+
+</mapper>
