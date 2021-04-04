@@ -7,6 +7,7 @@ import javax.inject.Inject;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Random;
+import java.util.UUID;
 import java.util.function.Consumer;
 
 public class RequestServicerImpl implements RequestServicer {
@@ -29,16 +30,16 @@ public class RequestServicerImpl implements RequestServicer {
      * Callback defined by the domain object receiving the reply, which in this case, is Transaction Service.
      */
 
-    HashMap<Integer, Consumer<ArrayList<Integer>>> accountToCallbackMap;
+    HashMap<Integer, Consumer<ArrayList<UUID>>> accountToCallbackMap;
 
-    public void makeGetAccountIdRequest(Request request, Consumer<ArrayList<Integer>> callback) {
+    public void makeGetAccountIdRequest(Request request, Consumer<ArrayList<UUID>> callback) {
         int id = generateRequestId();
         accountToCallbackMap.put(id, callback);
         requestPublisher.makeRequest(request,id);
     }
 
-    public void receiveGetAccountsIdReply (int requestId, ArrayList<Integer> accountIdList) {
-        Consumer<ArrayList<Integer>> callback = accountToCallbackMap.get(requestId);
+    public void receiveGetAccountsIdReply (int requestId, ArrayList<UUID> accountIdList) {
+        Consumer<ArrayList<UUID>> callback = accountToCallbackMap.get(requestId);
         callback.accept(accountIdList);
     }
 }

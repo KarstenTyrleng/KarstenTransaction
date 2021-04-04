@@ -18,10 +18,8 @@ import java.io.IOException;
 @Singleton
 public class RequestSender implements RequestPublisher {
 
-    ReplyReceiver replyReceiver;
     @Inject
-    RequestSender (ReplyReceiver replyReceiver) {
-        this.replyReceiver = replyReceiver;
+    RequestSender () {
     }
 
     private int requestId;

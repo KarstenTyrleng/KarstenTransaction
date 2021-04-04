@@ -8,6 +8,7 @@ import io.github.tyrleng.karsten.transaction.application.RequestServicerImpl;
 
 import javax.inject.Inject;
 import java.util.ArrayList;
+import java.util.UUID;
 
 public class ReplyReceiver {
 
@@ -62,10 +63,10 @@ public class ReplyReceiver {
 
         switch (topic) {
             case "getAccount": {
-                ArrayList<Integer> accountIdList = new ArrayList<>();
+                ArrayList<UUID> accountIdList = new ArrayList<>();
                 ArrayNode accountIdListNode = (ArrayNode)rootNode.get("accountIdList");
                 for (JsonNode accountIdNode : accountIdListNode ) {
-                    accountIdList.add(accountIdNode.asInt());
+                    accountIdList.add(UUID.fromString(accountIdNode.asText()));
                 }
                 requestServicer.receiveGetAccountsIdReply(requestId,accountIdList);
             }

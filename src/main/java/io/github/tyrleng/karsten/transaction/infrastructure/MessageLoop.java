@@ -46,11 +46,12 @@ public class MessageLoop {
             int subscribers = 0;
             int expectedSubscribers = 1;
 
+            // Transaction's Ports are 500x
             replySocket.bind("tcp://localhost:5000");
             pubSocket.bind("tcp://localhost:5001");
             syncSocket.bind("tcp://localhost:5002");
 
-            // bind to Account's IP address
+            // Physical's Ports are 501x
             requestSocket.bind("tcp://localhost:5010");
             subSocket.connect("tcp://localhost:5011");
 

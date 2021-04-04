@@ -8,5 +8,5 @@ import java.util.UUID;
 public interface TransactionMapper {
     List<TransactionSide> getAllTransactionCreditSide (UUID uuid);
     List<TransactionSide> getAllTransactionDebitSide (UUID uuid);
-    Transaction getTransaction (UUID uuid);
+    Transaction getTransactionBase (UUID uuid);
 }

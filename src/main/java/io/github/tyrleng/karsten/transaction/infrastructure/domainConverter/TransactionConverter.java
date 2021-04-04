@@ -6,13 +6,13 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializerProvider;
 import com.fasterxml.jackson.databind.module.SimpleModule;
 import com.fasterxml.jackson.databind.ser.std.StdSerializer;
-import io.github.tyrleng.finance.Money;
 import io.github.tyrleng.karsten.transaction.domain.Transaction;
-import io.github.tyrleng.karsten.transaction.domain.entity.Account;
+import org.joda.money.BigMoney;
 
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Set;
+import java.util.UUID;
 
 /**
  * Provides Custom Serializer
@@ -53,29 +53,29 @@ public class TransactionConverter implements JsonProvider {
 //            jsonGenerator = jsonGenerator.useDefaultPrettyPrinter();
             jsonGenerator.writeStartObject();
 
-            jsonGenerator.writeNumberField("id", transaction.getId());
-            jsonGenerator.writeStringField("date_created", transaction.getDateCreated().toString());
+            jsonGenerator.writeStringField("id", transaction.getId().toString());
+            jsonGenerator.writeStringField("dateCreated", transaction.getDateCreated().toString());
 
-            jsonGenerator.writeFieldName("account_amount_credited");
+            jsonGenerator.writeFieldName("accountAmountCredited");
             jsonGenerator.writeStartArray();
-            HashMap<Account, Money> accountMoneyCredited = transaction.getAccountMoneyCredited();
-            Set<Account> accountCredited = accountMoneyCredited.keySet();
-            for (Account account : accountCredited) {
+            HashMap<UUID, BigMoney> accountMoneyCredited = transaction.getAccountMoneyCredited();
+            Set<UUID> accountCredited = accountMoneyCredited.keySet();
+            for (UUID account : accountCredited) {
                 jsonGenerator.writeStartObject();
                 jsonGenerator.writeStringField("account", account.toString());
-                jsonGenerator.writeStringField("amount", accountMoneyCredited.get(account).getMoneyWithCurrencyCode());
+                jsonGenerator.writeStringField("amount", accountMoneyCredited.get(account).toString());
                 jsonGenerator.writeEndObject();
             }
             jsonGenerator.writeEndArray();
 
-            jsonGenerator.writeFieldName("account_amount_debited");
+            jsonGenerator.writeFieldName("accountAmountDebited");
             jsonGenerator.writeStartArray();
-            HashMap<Account, Money> accountMoneyDebited = transaction.getAccountMoneyDebited();
-            Set<Account> accountDebited = accountMoneyDebited.keySet();
-            for (Account account : accountDebited) {
+            HashMap<UUID, BigMoney> accountMoneyDebited = transaction.getAccountMoneyDebited();
+            Set<UUID> accountDebited = accountMoneyDebited.keySet();
+            for (UUID account : accountDebited) {
                 jsonGenerator.writeStartObject();
                 jsonGenerator.writeStringField("account", account.toString());
-                jsonGenerator.writeStringField("amount", accountMoneyDebited.get(account).getMoneyWithCurrencyCode());
+                jsonGenerator.writeStringField("amount", accountMoneyDebited.get(account).toString());
                 jsonGenerator.writeEndObject();
             }
             jsonGenerator.writeEndArray();

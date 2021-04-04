@@ -45,7 +45,7 @@ public class RepositoryImpl implements Repository {
         SqlSession session = sqlSessionFactory.openSession();
         TransactionMapper mapper = session.getMapper(TransactionMapper.class);
 
-        Transaction transaction = mapper.getTransaction(transactionId);
+        Transaction transaction = mapper.getTransactionBase(transactionId);
 
         List<TransactionSide> creditSideList = mapper.getAllTransactionCreditSide(transactionId);
         HashMap<UUID, BigMoney> accountMoneyCredited = new HashMap<>();

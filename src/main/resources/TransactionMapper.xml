@@ -21,7 +21,7 @@
         SELECT ACCOUNT_ID as accountId, MONEY  FROM TRANSACTION_SIDE WHERE TRANSACTION_ID = #{uuid} AND TYPE='DEBIT'
     </select>
 
-    <select id="getTransaction" parameterType="uuid" resultType="transaction">
+    <select id="getTransactionBase" parameterType="uuid" resultType="transaction">
         SELECT TRANSACTION_ID AS id, TRANSACT_DATE AS dateCreated FROM TRANSACTIONS WHERE TRANSACTION_ID=#{uuid}
     </select>
 

@@ -6,14 +6,16 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ArrayNode;
-import io.github.tyrleng.finance.Money;
 import io.github.tyrleng.karsten.transaction.application.TransactionService;
 import io.github.tyrleng.karsten.transaction.domain.incoming.CreateTransactionCommand;
-import io.github.tyrleng.karsten.transaction.domain.entity.Account;
+import org.joda.money.BigMoney;
+import org.joda.money.CurrencyUnit;
 
 import javax.inject.Inject;
 import java.io.IOException;
 import java.io.StringWriter;
+import java.math.BigDecimal;
+import java.util.UUID;
 
 /**
  * Reads Json and parses the Json into a command / query.
@@ -46,7 +48,7 @@ public class RequestReceiver {
                     return handleQuery(rootNode);
                 }
                 case "command": {
-                    handleCommand(rootNode);
+                    return handleCommand(rootNode);
                 }
             }
         } catch (JsonProcessingException e) {
@@ -80,17 +82,22 @@ public class RequestReceiver {
         CreateTransactionCommand command =  new CreateTransactionCommand();
         ArrayNode creditArray = (ArrayNode)rootNode.get("credit");
         ArrayNode debitArray = (ArrayNode)rootNode.get("debit");
+
         for (JsonNode creditAccountAndAmount : creditArray) {
-            Account account = new Account(creditAccountAndAmount.get("account").asInt());
+            UUID accountId = UUID.fromString(creditAccountAndAmount.get("accountId").asText()) ;
             JsonNode moneyJsonNode = creditAccountAndAmount.get("money");
-            Money amount = new Money(moneyJsonNode.get("currencyCode").asText(), moneyJsonNode.get("amount").asText());
-            command.addCreditAccountAndAmount(account,amount);
+            CurrencyUnit currencyUnit = CurrencyUnit.of(moneyJsonNode.get("currencyCode").asText());
+            BigDecimal amount = new BigDecimal( moneyJsonNode.get("amount").asText());
+            BigMoney creditAmount = BigMoney.of(currencyUnit, amount);
+            command.addCreditAccountAndAmount(accountId,creditAmount);
         }
         for (JsonNode debitAccountAndAmount : debitArray) {
-            Account account = new Account(debitAccountAndAmount.get("account").asInt());
+            UUID accountId = UUID.fromString(debitAccountAndAmount.get("accountId").asText()) ;
             JsonNode moneyJsonNode = debitAccountAndAmount.get("money");
-            Money amount = new Money(moneyJsonNode.get("currencyCode").asText(), moneyJsonNode.get("amount").asText());
-            command.addDebitAccountAndAmount(account,amount);
+            CurrencyUnit currencyUnit = CurrencyUnit.of(moneyJsonNode.get("currencyCode").asText());
+            BigDecimal amount = new BigDecimal( moneyJsonNode.get("amount").asText());
+            BigMoney debitAmount = BigMoney.of(currencyUnit, amount);
+            command.addDebitAccountAndAmount(accountId,debitAmount);
         }
         return command;
     }

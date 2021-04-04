@@ -1,9 +1,10 @@
 package io.github.tyrleng.karsten.transaction.domain;
 
-import io.github.tyrleng.finance.Money;
 import io.github.tyrleng.karsten.transaction.domain.incoming.CreateTransactionCommand;
-import io.github.tyrleng.karsten.transaction.domain.entity.Account;
 import lombok.Getter;
+import lombok.Setter;
+import org.joda.money.BigMoney;
+import org.joda.money.CurrencyUnit;
 
 import java.time.LocalDate;
 import java.util.HashMap;
@@ -16,11 +17,19 @@ import java.util.UUID;
  */
 public class Transaction {
 
-    @Getter private HashMap<Account,Money> accountMoneyCredited;
-    @Getter private HashMap<Account,Money> accountMoneyDebited;
+    @Getter @Setter
+    private HashMap<UUID, BigMoney> accountMoneyCredited;
+    @Getter @Setter
+    private HashMap<UUID,BigMoney> accountMoneyDebited;
 
-    @Getter private UUID id;
-    @Getter private LocalDate dateCreated;
+    @Getter @Setter
+    private UUID id;
+    @Getter @Setter
+    private LocalDate dateCreated;
+
+    public Transaction () {
+
+    }
 
     public Transaction (CreateTransactionCommand command) {
         this.accountMoneyCredited = command.getAccountsCredited();
@@ -37,25 +46,26 @@ public class Transaction {
 
     private void checkCreditDebitAmountsBalance () {
         try {
-            Money totalAmountCredited = new Money("SGD", "0");
-            Money totalAmountDebited = new Money("SGD", "0");
+            CurrencyUnit sgd = CurrencyUnit.of("SGD");
+            BigMoney totalAmountCredited = BigMoney.of(sgd, 0);
+            BigMoney totalAmountDebited = BigMoney.of(sgd, 0);
 
-            Set<Account> accountCredited = accountMoneyCredited.keySet();
-            for (Account account : accountCredited) {
-                Money amount = accountMoneyCredited.get(account);
-                totalAmountCredited = totalAmountCredited.add(amount);
+            Set<UUID> accountCredited = accountMoneyCredited.keySet();
+            for (UUID account : accountCredited) {
+                BigMoney amount = accountMoneyCredited.get(account);
+                totalAmountCredited = totalAmountCredited.plus(amount);
             }
-            Set<Account> accountDebited = accountMoneyDebited.keySet();
-            for (Account account : accountDebited) {
-                Money amount = accountMoneyDebited.get(account);
-                totalAmountDebited = totalAmountDebited.add(amount);
+            Set<UUID> accountDebited = accountMoneyDebited.keySet();
+            for (UUID account : accountDebited) {
+                BigMoney amount = accountMoneyDebited.get(account);
+                totalAmountDebited = totalAmountDebited.plus(amount);
             }
             if (!totalAmountCredited.equals(totalAmountDebited)) {
                 throw new TransactionException();
             }
         }
         catch (TransactionException e) {
-            e.printStackTrace();;
+            e.printStackTrace();
         }
     }
 }
