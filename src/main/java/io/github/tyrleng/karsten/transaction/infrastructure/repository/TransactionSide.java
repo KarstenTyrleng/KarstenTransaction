@@ -11,4 +11,15 @@ public class TransactionSide {
     private UUID accountId;
     @Getter @Setter
     private BigMoney money;
+    @Getter @Setter
+    private UUID transactionId;
+    @Getter @Setter
+    private String transactionType;
+
+    TransactionSide (UUID transactionId, UUID accountId, String transactionType, BigMoney money) {
+        this.accountId = accountId;
+        this.money = money;
+        this.transactionId = transactionId;
+        this.transactionType = transactionType;
+    }
 }

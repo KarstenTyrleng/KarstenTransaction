@@ -9,8 +9,8 @@
         INSERT INTO TRANSACTIONS VALUES (#{id}, #{dateCreated})
     </insert>
 
-    <insert id="createTransactionSide" parameterType="map">
-        INSERT INTO TRANSACTION_SIDE VALUES (#{transactionId}, #{type}, #{accountId}, #{money})
+    <insert id="createTransactionSide" parameterType="transactionSide">
+        INSERT INTO TRANSACTION_SIDE VALUES (#{transactionId}, #{transactionType}, #{accountId}, #{money})
     </insert>
 
     <select id="getAllTransactionCreditSide" parameterType="uuid" resultType="transactionSide">

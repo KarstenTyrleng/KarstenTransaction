@@ -13,6 +13,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Set;
 import java.util.UUID;
 
 public class RepositoryImpl implements Repository {
@@ -37,7 +38,23 @@ public class RepositoryImpl implements Repository {
 
     @Override
     public void saveTransaction(Transaction transaction) {
+        SqlSession session = sqlSessionFactory.openSession();
+        TransactionMapper mapper = session.getMapper(TransactionMapper.class);
+        mapper.createTransactionBase(transaction);
+        HashMap<UUID, BigMoney> accountMoneyCredited = transaction.getAccountMoneyCredited();
+        HashMap<UUID, BigMoney> accountMoneyDebited = transaction.getAccountMoneyDebited();
 
+        Set<UUID> accountMoneyCreditedKeys = accountMoneyCredited.keySet();
+        for (UUID accountId : accountMoneyCreditedKeys) {
+            mapper.createTransactionSide(new TransactionSide(transaction.getId(), accountId, "Credit", accountMoneyCredited.get(accountId)));
+        }
+
+        Set<UUID> accountMoneyDebitedKeys = accountMoneyDebited.keySet();
+        for (UUID accountId : accountMoneyDebitedKeys) {
+            mapper.createTransactionSide(new TransactionSide(transaction.getId(), accountId, "Debit", accountMoneyDebited.get(accountId)));
+        }
+        session.commit();
+        //TODO: wrap the whole code in transaction. Either everything goes well or all the DB entries roll back.
     }
 
     @Override
