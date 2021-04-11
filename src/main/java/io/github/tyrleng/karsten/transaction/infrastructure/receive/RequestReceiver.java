@@ -66,7 +66,7 @@ public class RequestReceiver {
         int requestId = requestIdNode.asInt();
 
         switch (topic) {
-            case "getTransactionIds": {
+            case "getAllTransactionId": {
                 List<UUID> transactionIdList = transactionService.getTransactionIds();
                 return getTransactionIdJson(transactionIdList, requestId, topic);
             }
