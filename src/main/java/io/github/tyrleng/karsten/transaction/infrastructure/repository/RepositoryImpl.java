@@ -64,4 +64,12 @@ public class RepositoryImpl implements Repository {
 
         return transaction;
     }
+
+    @Override
+    public List<UUID> getAllTransactionId() {
+        SqlSession session = sqlSessionFactory.openSession();
+        TransactionMapper mapper = session.getMapper(TransactionMapper.class);
+        return mapper.getAllTransactionId();
+    }
+
 }

@@ -11,6 +11,7 @@ import lombok.Setter;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 import java.util.function.BiConsumer;
 import java.util.function.Consumer;
@@ -32,9 +33,19 @@ public class TransactionService {
 //        getAccounts();
     }
 
+    public UUID createTransaction (CreateTransactionCommand command) {
+        Transaction transaction = new Transaction(command);
+        repository.saveTransaction(transaction);
+        eventPublisher.publish(new TransactionCreatedEvent(transaction));
+        return transaction.getId();
+    }
+
+    public List<UUID> getTransactionIds () {
+        return repository.getAllTransactionId();
+    }
+
     @Setter
     private static ArrayList<UUID> accountIdList;
-
     /**
      * Does the population of Account IDs for accounts.
      * Has to be done here because making Account do the population by itself would be awkward.
@@ -44,11 +55,4 @@ public class TransactionService {
     }
 
     private final Consumer<ArrayList<UUID>> handleCommandResults = TransactionService::setAccountIdList;
-
-    public UUID createTransaction (CreateTransactionCommand command) {
-        Transaction transaction = new Transaction(command);
-        repository.saveTransaction(transaction);
-        eventPublisher.publish(new TransactionCreatedEvent(transaction));
-        return transaction.getId();
-    }
 }

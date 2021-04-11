@@ -9,4 +9,5 @@ public interface TransactionMapper {
     List<TransactionSide> getAllTransactionCreditSide (UUID uuid);
     List<TransactionSide> getAllTransactionDebitSide (UUID uuid);
     Transaction getTransactionBase (UUID uuid);
+    List<UUID> getAllTransactionId();
 }

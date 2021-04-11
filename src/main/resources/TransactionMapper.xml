@@ -25,4 +25,8 @@
         SELECT TRANSACTION_ID AS id, TRANSACT_DATE AS dateCreated FROM TRANSACTIONS WHERE TRANSACTION_ID=#{uuid}
     </select>
 
+    <select id="getAllTransactionId" resultType="transaction">
+        SELECT TRANSACTION_ID FROM TRANSACTIONS;
+    </select>
+
 </mapper>

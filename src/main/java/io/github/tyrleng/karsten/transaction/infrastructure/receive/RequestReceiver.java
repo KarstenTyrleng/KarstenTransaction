@@ -15,6 +15,7 @@ import javax.inject.Inject;
 import java.io.IOException;
 import java.io.StringWriter;
 import java.math.BigDecimal;
+import java.util.List;
 import java.util.UUID;
 
 /**
@@ -58,7 +59,46 @@ public class RequestReceiver {
     }
 
     private String handleQuery (JsonNode rootNode){
-       return null;
+        JsonNode topicNode = rootNode.get("topic");
+        String topic = topicNode.asText();
+
+        JsonNode requestIdNode = rootNode.get("requestId");
+        int requestId = requestIdNode.asInt();
+
+        switch (topic) {
+            case "getTransactionIds": {
+                List<UUID> transactionIdList = transactionService.getTransactionIds();
+                return getTransactionIdJson(transactionIdList, requestId, topic);
+            }
+            default:
+                return "You Fucked Up";
+        }
+    }
+
+    private String getTransactionIdJson (List<UUID> transactionIdList, int requestId, String topic) {
+        try {
+            JsonFactory jsonFactory = new JsonFactory();
+            StringWriter writer = new StringWriter();
+            JsonGenerator jsonGenerator = jsonFactory.createGenerator(writer);
+            jsonGenerator.useDefaultPrettyPrinter();
+
+            jsonGenerator.writeStartObject();
+            jsonGenerator.writeNumberField("requestId", requestId);
+            jsonGenerator.writeStringField("topic", topic);
+            jsonGenerator.writeFieldName("transactionIdList");
+            jsonGenerator.writeStartArray();
+            for (UUID accountId : transactionIdList) {
+                jsonGenerator.writeString(accountId.toString());
+            }
+            jsonGenerator.writeEndArray();
+            jsonGenerator.writeEndObject();
+            jsonGenerator.close();
+            return writer.toString();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        // by right, should be some status code.
+        return " ";
     }
 
     private String handleCommand (JsonNode rootNode) {
