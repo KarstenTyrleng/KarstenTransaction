@@ -20,8 +20,8 @@ import javax.inject.Inject;
 public class EventPublishSender implements EventPublisher {
 
     public static class PubEnvelope {
-        private String topic;
-        private String contents;
+        private final String topic;
+        private final String contents;
         public PubEnvelope(String topic, String contents) {
             this.topic = topic;
             this.contents = contents;
