@@ -7,7 +7,7 @@ import io.github.tyrleng.karsten.transaction.application.Repository;
 import io.github.tyrleng.karsten.transaction.application.RequestPublisher;
 import io.github.tyrleng.karsten.transaction.infrastructure.repository.RepositoryImpl;
 import io.github.tyrleng.karsten.transaction.infrastructure.send.EventPublishSender;
-import io.github.tyrleng.karsten.transaction.infrastructure.send.RequestSender;
+import io.github.tyrleng.karsten.transaction.infrastructure.send.RequestPublisherSender;
 
 import javax.inject.Singleton;
 
@@ -24,5 +24,5 @@ public interface InfraModule {
 
     @Binds
     @Singleton
-    RequestPublisher bindRequestPublisher (RequestSender requestSender);
+    RequestPublisher bindRequestPublisher (RequestPublisherSender requestPublisherSender);
 }

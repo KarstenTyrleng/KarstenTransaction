@@ -16,10 +16,10 @@ import javax.inject.Singleton;
 import java.io.IOException;
 
 @Singleton
-public class RequestSender implements RequestPublisher {
+public class RequestPublisherSender implements RequestPublisher {
 
     @Inject
-    RequestSender () {
+    RequestPublisherSender() {
     }
 
     private int requestId;
