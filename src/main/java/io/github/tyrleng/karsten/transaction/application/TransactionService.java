@@ -44,6 +44,11 @@ public class TransactionService {
         return repository.getAllTransactionId();
     }
 
+    public Transaction findTransaction (UUID transactionId) {
+        return repository.findTransaction(transactionId);
+    }
+
+
     @Setter
     private static ArrayList<UUID> accountIdList;
     /**

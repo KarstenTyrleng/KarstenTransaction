@@ -7,7 +7,9 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import io.github.tyrleng.karsten.transaction.application.TransactionService;
+import io.github.tyrleng.karsten.transaction.domain.Transaction;
 import io.github.tyrleng.karsten.transaction.domain.incoming.CreateTransactionCommand;
+import io.github.tyrleng.karsten.transaction.infrastructure.domainConverter.TransactionConverter;
 import org.joda.money.BigMoney;
 import org.joda.money.CurrencyUnit;
 
@@ -70,6 +72,12 @@ public class RequestReceiver {
                 List<UUID> transactionIdList = transactionService.getTransactionIds();
                 return getTransactionIdJson(transactionIdList, requestId, topic);
             }
+            case "getTransaction": {
+                JsonNode transactionIdNode = rootNode.get("id");
+                UUID transactionId = UUID.fromString(transactionIdNode.textValue());
+                Transaction transaction = transactionService.findTransaction(transactionId);
+                return getTransactionJsonReply(transaction, requestId, topic);
+            }
             default:
                 return "You Fucked Up";
         }
@@ -101,6 +109,27 @@ public class RequestReceiver {
         return " ";
     }
 
+    private String getTransactionJsonReply (Transaction transaction, int requestId, String topic) {
+        try {
+            JsonFactory jsonFactory = new JsonFactory();
+            StringWriter writer = new StringWriter();
+            JsonGenerator jsonGenerator = jsonFactory.createGenerator(writer);
+            jsonGenerator.useDefaultPrettyPrinter();
+
+            jsonGenerator.writeStartObject();
+            jsonGenerator.writeNumberField("requestId", requestId);
+            jsonGenerator.writeStringField("topic", topic);
+            String transactionJson = new TransactionConverter(transaction).provideDomainObjectAsJson();
+            jsonGenerator.writeRaw(transactionJson);
+            jsonGenerator.close();
+            return writer.toString();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        // by right, should be some status code.
+        return " ";
+    }
+
     private String handleCommand (JsonNode rootNode) {
         JsonNode topicNode = rootNode.get("topic");
         String topic = topicNode.asText();
@@ -112,7 +141,7 @@ public class RequestReceiver {
             case "createTransaction" : {
                 CreateTransactionCommand command = createTransactionCommand(rootNode);
                 transactionService.createTransaction(command);
-                return createTransactionJson(requestId, topic);
+                return createTransactionJsonReply(requestId, topic);
             }
         }
         return "Receiver's Handle Command Fucked Up";
@@ -142,7 +171,7 @@ public class RequestReceiver {
         return command;
     }
 
-    private String createTransactionJson (int requestId, String topic) {
+    private String createTransactionJsonReply (int requestId, String topic) {
         try {
             JsonFactory jsonFactory = new JsonFactory();
             StringWriter writer = new StringWriter();

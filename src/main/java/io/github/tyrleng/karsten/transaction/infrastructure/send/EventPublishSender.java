@@ -42,7 +42,7 @@ public class EventPublishSender implements EventPublisher {
             if (publishEvent instanceof TransactionCreatedEvent) {
                 Transaction transaction = ((TransactionCreatedEvent) publishEvent).getTransaction();
                 String transactionJson = new TransactionConverter(transaction).provideDomainObjectAsJson();
-                PubEnvelope envelope = new PubEnvelope("Transactions.TransactionCreated", transactionJson);
+                PubEnvelope envelope = new PubEnvelope("Transaction.TransactionCreated", transactionJson);
                 MessageLoop.pubStack.push(envelope);
             }
         }
