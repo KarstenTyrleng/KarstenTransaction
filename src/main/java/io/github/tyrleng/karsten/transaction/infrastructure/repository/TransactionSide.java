@@ -16,6 +16,10 @@ public class TransactionSide {
     @Getter @Setter
     private String transactionType;
 
+    TransactionSide() {
+
+    }
+
     TransactionSide (UUID transactionId, UUID accountId, String transactionType, BigMoney money) {
         this.accountId = accountId;
         this.money = money;
