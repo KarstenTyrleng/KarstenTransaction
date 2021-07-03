@@ -7,6 +7,8 @@
 
     <typeAliases>
         <typeAlias alias ="uuid" type="java.util.UUID"/>
+        <typeAlias alias="uuidHandler" type="io.github.tyrleng.karsten.transaction.infrastructure.repository.UuidHandler"/>
+        <typeAlias alias="bigMoneyHandler" type="io.github.tyrleng.karsten.transaction.infrastructure.repository.BigMoneyHandler"/>
         <typeAlias alias="transaction" type="io.github.tyrleng.karsten.transaction.domain.Transaction"/>
         <typeAlias alias="transactionSide" type="io.github.tyrleng.karsten.transaction.infrastructure.repository.TransactionSide"/>
     </typeAliases>

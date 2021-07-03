@@ -2,6 +2,7 @@ package io.github.tyrleng.karsten.transaction.infrastructure.repository;
 
 import org.apache.ibatis.type.BaseTypeHandler;
 import org.apache.ibatis.type.JdbcType;
+import org.apache.ibatis.type.MappedJdbcTypes;
 import org.joda.money.BigMoney;
 import org.joda.money.CurrencyUnit;
 
@@ -11,6 +12,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+@MappedJdbcTypes(JdbcType.VARCHAR)
 public class BigMoneyHandler extends BaseTypeHandler<BigMoney> {
     @Override
     public void setNonNullParameter(PreparedStatement ps, int index, BigMoney bigMoney, JdbcType jdbcType) throws SQLException {

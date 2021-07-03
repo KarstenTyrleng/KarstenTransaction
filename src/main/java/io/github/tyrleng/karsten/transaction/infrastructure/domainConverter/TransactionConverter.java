@@ -34,7 +34,7 @@ public class TransactionConverter implements JsonProvider {
         module.addSerializer(Transaction.class, new TransactionSerializer());
         mapper.registerModule(module);
         String json =  mapper.writerWithDefaultPrettyPrinter().writeValueAsString(transaction);
-        System.out.println(json);
+//        System.out.println(json);
         return json;
     }
 

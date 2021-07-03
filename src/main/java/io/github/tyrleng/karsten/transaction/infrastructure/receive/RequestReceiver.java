@@ -70,10 +70,10 @@ public class RequestReceiver {
         switch (topic) {
             case "getAllTransactionId": {
                 List<UUID> transactionIdList = transactionService.getTransactionIds();
-                return getTransactionIdJson(transactionIdList, requestId, topic);
+                return getAllTransactionIdJsonReply(transactionIdList, requestId, topic);
             }
             case "getTransaction": {
-                JsonNode transactionIdNode = rootNode.get("id");
+                JsonNode transactionIdNode = rootNode.get("transactionId");
                 UUID transactionId = UUID.fromString(transactionIdNode.textValue());
                 Transaction transaction = transactionService.findTransaction(transactionId);
                 return getTransactionJsonReply(transaction, requestId, topic);
@@ -83,7 +83,7 @@ public class RequestReceiver {
         }
     }
 
-    private String getTransactionIdJson (List<UUID> transactionIdList, int requestId, String topic) {
+    private String getAllTransactionIdJsonReply(List<UUID> transactionIdList, int requestId, String topic) {
         try {
             JsonFactory jsonFactory = new JsonFactory();
             StringWriter writer = new StringWriter();

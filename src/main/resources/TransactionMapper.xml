@@ -5,6 +5,12 @@
 
 <mapper namespace="io.github.tyrleng.karsten.transaction.infrastructure.repository.TransactionMapper">
 
+<!--    <resultMap id="transactionSideMap" type="transactionSide">-->
+<!--        <id property="accountId" column="ACCOUNT_ID" typeHandler="uuidHandler"/>-->
+<!--        <result property="money" column="MONEY" typeHandler="bigMoneyHandler"/>-->
+<!--        <result property=""-->
+<!--    </resultMap>-->
+
     <insert id="createTransactionBase" parameterType="transaction">
         INSERT INTO TRANSACTIONS VALUES (#{id}, #{dateCreated})
     </insert>
@@ -18,7 +24,7 @@
     </select>
 
     <select id="getAllTransactionDebitSide" parameterType="uuid" resultType="transactionSide">
-        SELECT ACCOUNT_ID as accountId, MONEY  FROM TRANSACTION_SIDE WHERE TRANSACTION_ID = #{uuid} AND TYPE='DEBIT'
+        SELECT ACCOUNT_ID as accountId, money FROM TRANSACTION_SIDE WHERE TRANSACTION_ID = #{uuid} AND TYPE='DEBIT'
     </select>
 
     <select id="getTransactionBase" parameterType="uuid" resultType="transaction">
