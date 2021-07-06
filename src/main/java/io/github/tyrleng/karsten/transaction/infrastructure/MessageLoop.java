@@ -52,7 +52,7 @@ public class MessageLoop {
             syncSocket.bind("tcp://localhost:5002");
 
             // Physical's Ports are 501x
-            requestSocket.bind("tcp://localhost:5010");
+            requestSocket.connect("tcp://localhost:5010");
             subSocket.connect("tcp://localhost:5011");
 
             Stack<String> topicsList = eventSubscribeReceiver.topicsToSubscribeTo();
