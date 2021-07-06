@@ -75,14 +75,18 @@ public class TransactionConverter implements JsonProvider {
             jsonGenerator.writeStartArray();
             HashMap<UUID, BigMoney> accountMoneyDebited = transaction.getAccountMoneyDebited();
             Set<UUID> accountDebited = accountMoneyDebited.keySet();
-            for (UUID account : accountDebited) {
+            for (UUID accountId : accountDebited) {
                 jsonGenerator.writeStartObject();
-                jsonGenerator.writeStringField("account", account.toString());
-                jsonGenerator.writeStringField("amount", accountMoneyDebited.get(account).toString());
+                jsonGenerator.writeStringField("accountId", accountId.toString());
+                String accountAndAmount = accountMoneyDebited.get(accountId).toString();
+                String[] split = accountAndAmount.split(" ");
+                jsonGenerator.writeStringField("currency", split[0]);
+                jsonGenerator.writeStringField("amount", split[1]);
                 jsonGenerator.writeEndObject();
             }
             jsonGenerator.writeEndArray();
             jsonGenerator.writeEndObject();
+            jsonGenerator.close();
         }
     }
 }
