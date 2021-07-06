@@ -119,8 +119,12 @@ public class RequestReceiver {
             jsonGenerator.writeStartObject();
             jsonGenerator.writeNumberField("requestId", requestId);
             jsonGenerator.writeStringField("topic", topic);
+
             String transactionJson = new TransactionConverter(transaction).provideDomainObjectAsJson();
-            jsonGenerator.writeRaw(transactionJson);
+            jsonGenerator.writeFieldName("transaction");
+            jsonGenerator.writeRawValue(transactionJson);
+            jsonGenerator.writeEndObject();
+//            jsonGenerator.writeRaw("}");
             jsonGenerator.close();
             return writer.toString();
         } catch (IOException e) {
