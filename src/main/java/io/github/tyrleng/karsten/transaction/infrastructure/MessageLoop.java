@@ -85,14 +85,15 @@ public class MessageLoop {
                     replyReceiver.handleReply(reply);
                 }
 
-                if (!pubStack.isEmpty()) {
-                    if (subscribers < expectedSubscribers) {
-                        String foo = syncSocket.recvStr(ZMQ.DONTWAIT);
-                        if (foo != null) {
-                            System.out.println("received subscriber");
-                            subscribers++;
-                        }
+                if (subscribers < expectedSubscribers) {
+                    String foo = syncSocket.recvStr(ZMQ.DONTWAIT);
+                    if (foo != null) {
+                        System.out.println("received subscriber");
+                        subscribers++;
                     }
+                }
+
+                if (!pubStack.isEmpty()) {
                     if (subscribers == expectedSubscribers) {
                         EventPublishSender.PubEnvelope envelope = pubStack.pop();
                         System.out.println("Publishing");
