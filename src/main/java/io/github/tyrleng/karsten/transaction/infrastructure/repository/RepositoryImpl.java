@@ -46,12 +46,12 @@ public class RepositoryImpl implements Repository {
 
         Set<UUID> accountMoneyCreditedKeys = accountMoneyCredited.keySet();
         for (UUID accountId : accountMoneyCreditedKeys) {
-            mapper.createTransactionSide(new TransactionSide(transaction.getId(), accountId, "Credit", accountMoneyCredited.get(accountId)));
+                mapper.createTransactionSide(new TransactionSide(transaction.getId(), accountId, "CREDIT", accountMoneyCredited.get(accountId)));
         }
 
         Set<UUID> accountMoneyDebitedKeys = accountMoneyDebited.keySet();
         for (UUID accountId : accountMoneyDebitedKeys) {
-            mapper.createTransactionSide(new TransactionSide(transaction.getId(), accountId, "Debit", accountMoneyDebited.get(accountId)));
+            mapper.createTransactionSide(new TransactionSide(transaction.getId(), accountId, "DEBIT", accountMoneyDebited.get(accountId)));
         }
         session.commit();
         //TODO: wrap the whole code in transaction. Either everything goes well or all the DB entries roll back.
