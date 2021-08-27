@@ -18,22 +18,23 @@ import java.util.UUID;
 public class Transaction {
 
     @Getter @Setter
-    private HashMap<UUID, BigMoney> accountMoneyCredited;
+    private HashMap<UUID, BigMoney> creditSplits;
     @Getter @Setter
-    private HashMap<UUID,BigMoney> accountMoneyDebited;
+    private HashMap<UUID,BigMoney> debitSplits;
 
     @Getter @Setter
     private UUID id;
     @Getter @Setter
     private LocalDate dateCreated;
 
+    // To allow building by setter functions.
     public Transaction () {
 
     }
 
     public Transaction (CreateTransactionCommand command) {
-        this.accountMoneyCredited = command.getAccountsCredited();
-        this.accountMoneyDebited = command.getAccountsDebited();
+        this.creditSplits = command.getAccountsCredited();
+        this.debitSplits = command.getAccountsDebited();
         checkAccountsValid();
         checkCreditDebitAmountsBalance();
         id = UUID.randomUUID();
@@ -50,15 +51,15 @@ public class Transaction {
             BigMoney totalAmountCredited = BigMoney.of(sgd, 0);
             BigMoney totalAmountDebited = BigMoney.of(sgd, 0);
 
-            Set<UUID> accountCredited = accountMoneyCredited.keySet();
-            for (UUID account : accountCredited) {
-                BigMoney amount = accountMoneyCredited.get(account);
-                totalAmountCredited = totalAmountCredited.plus(amount);
+            Set<UUID> accountCredited = creditSplits.keySet();
+            for (UUID accountId : accountCredited) {
+                BigMoney creditMoney = creditSplits.get(accountId);
+                totalAmountCredited = totalAmountCredited.plus(creditMoney);
             }
-            Set<UUID> accountDebited = accountMoneyDebited.keySet();
-            for (UUID account : accountDebited) {
-                BigMoney amount = accountMoneyDebited.get(account);
-                totalAmountDebited = totalAmountDebited.plus(amount);
+            Set<UUID> accountDebited = debitSplits.keySet();
+            for (UUID accountId : accountDebited) {
+                BigMoney debitMoney = debitSplits.get(accountId);
+                totalAmountDebited = totalAmountDebited.plus(debitMoney);
             }
             if (!totalAmountCredited.equals(totalAmountDebited)) {
                 throw new TransactionException();

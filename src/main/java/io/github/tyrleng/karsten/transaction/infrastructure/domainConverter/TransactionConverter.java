@@ -53,35 +53,35 @@ public class TransactionConverter implements JsonProvider {
 //            jsonGenerator = jsonGenerator.useDefaultPrettyPrinter();
             jsonGenerator.writeStartObject();
 
-            jsonGenerator.writeStringField("id", transaction.getId().toString());
-            jsonGenerator.writeStringField("dateCreated", transaction.getDateCreated().toString());
+            jsonGenerator.writeStringField("txnId", transaction.getId().toString());
+            jsonGenerator.writeStringField("txnDateCreated", transaction.getDateCreated().toString());
 
-            jsonGenerator.writeFieldName("accountAmountCredited");
+            jsonGenerator.writeFieldName("txnCreditSplits");
             jsonGenerator.writeStartArray();
-            HashMap<UUID, BigMoney> accountMoneyCredited = transaction.getAccountMoneyCredited();
-            Set<UUID> accountCredited = accountMoneyCredited.keySet();
-            for (UUID accountId : accountCredited) {
+            HashMap<UUID, BigMoney> txnCreditSplits = transaction.getCreditSplits();
+            Set<UUID> accountCreditedId = txnCreditSplits.keySet();
+            for (UUID accountId : accountCreditedId) {
                 jsonGenerator.writeStartObject();
-                jsonGenerator.writeStringField("accountId", accountId.toString());
-                String accountAndAmount = accountMoneyCredited.get(accountId).toString();
-                String[] split = accountAndAmount.split(" ");
-                jsonGenerator.writeStringField("currency", split[0]);
-                jsonGenerator.writeStringField("amount", split[1]);
+                jsonGenerator.writeStringField("txnSplitAccountId", accountId.toString());
+                String currencyAndAmount = txnCreditSplits.get(accountId).toString();
+                String[] split = currencyAndAmount.split(" ");
+                jsonGenerator.writeStringField("txnSplitCurrency", split[0]);
+                jsonGenerator.writeStringField("txnSplitAmount", split[1]);
                 jsonGenerator.writeEndObject();
             }
             jsonGenerator.writeEndArray();
 
-            jsonGenerator.writeFieldName("accountAmountDebited");
+            jsonGenerator.writeFieldName("txnDebitSplits");
             jsonGenerator.writeStartArray();
-            HashMap<UUID, BigMoney> accountMoneyDebited = transaction.getAccountMoneyDebited();
-            Set<UUID> accountDebited = accountMoneyDebited.keySet();
-            for (UUID accountId : accountDebited) {
+            HashMap<UUID, BigMoney> txnDebitSplits = transaction.getDebitSplits();
+            Set<UUID> accountDebitedId = txnDebitSplits.keySet();
+            for (UUID accountId : accountDebitedId) {
                 jsonGenerator.writeStartObject();
-                jsonGenerator.writeStringField("accountId", accountId.toString());
-                String accountAndAmount = accountMoneyDebited.get(accountId).toString();
+                jsonGenerator.writeStringField("txnSplitAccountId", accountId.toString());
+                String accountAndAmount = txnDebitSplits.get(accountId).toString();
                 String[] split = accountAndAmount.split(" ");
-                jsonGenerator.writeStringField("currency", split[0]);
-                jsonGenerator.writeStringField("amount", split[1]);
+                jsonGenerator.writeStringField("txnSplitCurrency", split[0]);
+                jsonGenerator.writeStringField("txnSplitAmount", split[1]);
                 jsonGenerator.writeEndObject();
             }
             jsonGenerator.writeEndArray();

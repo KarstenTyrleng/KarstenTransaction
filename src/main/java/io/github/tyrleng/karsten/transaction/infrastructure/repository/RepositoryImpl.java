@@ -41,8 +41,8 @@ public class RepositoryImpl implements Repository {
         SqlSession session = sqlSessionFactory.openSession();
         TransactionMapper mapper = session.getMapper(TransactionMapper.class);
         mapper.createTransactionBase(transaction);
-        HashMap<UUID, BigMoney> accountMoneyCredited = transaction.getAccountMoneyCredited();
-        HashMap<UUID, BigMoney> accountMoneyDebited = transaction.getAccountMoneyDebited();
+        HashMap<UUID, BigMoney> accountMoneyCredited = transaction.getCreditSplits();
+        HashMap<UUID, BigMoney> accountMoneyDebited = transaction.getDebitSplits();
 
         Set<UUID> accountMoneyCreditedKeys = accountMoneyCredited.keySet();
         for (UUID accountId : accountMoneyCreditedKeys) {
@@ -76,8 +76,8 @@ public class RepositoryImpl implements Repository {
             accountMoneyDebited.put(transactionSide.getAccountId(), transactionSide.getMoney());
         }
 
-        transaction.setAccountMoneyCredited(accountMoneyCredited);
-        transaction.setAccountMoneyDebited(accountMoneyDebited);
+        transaction.setCreditSplits(accountMoneyCredited);
+        transaction.setDebitSplits(accountMoneyDebited);
 
         return transaction;
     }

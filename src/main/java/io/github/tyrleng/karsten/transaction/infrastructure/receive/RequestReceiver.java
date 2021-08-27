@@ -79,7 +79,7 @@ public class RequestReceiver {
                 return getTransactionJsonReply(transaction, requestId, topic);
             }
             default:
-                return "You Fucked Up";
+                return " ";
         }
     }
 
@@ -148,27 +148,25 @@ public class RequestReceiver {
                 return createTransactionJsonReply(requestId, topic);
             }
         }
-        return "Receiver's Handle Command Fucked Up";
+        return " ";
     }
 
     private CreateTransactionCommand createTransactionCommand(JsonNode rootNode) {
         CreateTransactionCommand command =  new CreateTransactionCommand();
-        ArrayNode creditArray = (ArrayNode)rootNode.get("credit");
-        ArrayNode debitArray = (ArrayNode)rootNode.get("debit");
+        JsonNode creditSplits = rootNode.get("txnCreditSplits");
+        JsonNode debitSplits = rootNode.get("txnDebitSplits");
 
-        for (JsonNode creditAccountAndAmount : creditArray) {
-            UUID accountId = UUID.fromString(creditAccountAndAmount.get("accountId").asText()) ;
-            JsonNode moneyJsonNode = creditAccountAndAmount.get("money");
-            CurrencyUnit currencyUnit = CurrencyUnit.of(moneyJsonNode.get("currencyCode").asText());
-            BigDecimal amount = new BigDecimal( moneyJsonNode.get("amount").asText());
+        for (JsonNode creditAccountAndMoney : creditSplits) {
+            UUID accountId = UUID.fromString(creditAccountAndMoney.get("txnSplitAccountId").asText()) ;
+            CurrencyUnit currencyUnit = CurrencyUnit.of(creditAccountAndMoney.get("txnSplitCurrency").asText());
+            BigDecimal amount = new BigDecimal( creditAccountAndMoney.get("txnSplitAmount").asText());
             BigMoney creditAmount = BigMoney.of(currencyUnit, amount);
             command.addCreditAccountAndAmount(accountId,creditAmount);
         }
-        for (JsonNode debitAccountAndAmount : debitArray) {
-            UUID accountId = UUID.fromString(debitAccountAndAmount.get("accountId").asText()) ;
-            JsonNode moneyJsonNode = debitAccountAndAmount.get("money");
-            CurrencyUnit currencyUnit = CurrencyUnit.of(moneyJsonNode.get("currencyCode").asText());
-            BigDecimal amount = new BigDecimal( moneyJsonNode.get("amount").asText());
+        for (JsonNode debitAccountAndMoney : debitSplits) {
+            UUID accountId = UUID.fromString(debitAccountAndMoney.get("txnSplitAccountId").asText()) ;
+            CurrencyUnit currencyUnit = CurrencyUnit.of(debitAccountAndMoney.get("txnSplitCurrency").asText());
+            BigDecimal amount = new BigDecimal( debitAccountAndMoney.get("txnSplitAmount").asText());
             BigMoney debitAmount = BigMoney.of(currencyUnit, amount);
             command.addDebitAccountAndAmount(accountId,debitAmount);
         }
