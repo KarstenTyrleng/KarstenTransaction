@@ -6,7 +6,7 @@ import org.joda.money.BigMoney;
 
 import java.util.UUID;
 
-public class TransactionSide {
+public class TransactionSplit {
     @Getter @Setter
     private UUID accountId;
     @Getter @Setter
@@ -16,11 +16,11 @@ public class TransactionSide {
     @Getter @Setter
     private String transactionType;
 
-    TransactionSide() {
+    TransactionSplit() {
 
     }
 
-    TransactionSide (UUID transactionId, UUID accountId, String transactionType, BigMoney money) {
+    TransactionSplit(UUID transactionId, UUID accountId, String transactionType, BigMoney money) {
         this.accountId = accountId;
         this.money = money;
         this.transactionId = transactionId;

@@ -73,7 +73,7 @@ public class RequestReceiver {
                 return getAllTransactionIdJsonReply(transactionIdList, requestId, topic);
             }
             case "getTransaction": {
-                JsonNode transactionIdNode = rootNode.get("transactionId");
+                JsonNode transactionIdNode = rootNode.get("txnId");
                 UUID transactionId = UUID.fromString(transactionIdNode.textValue());
                 Transaction transaction = transactionService.findTransaction(transactionId);
                 return getTransactionJsonReply(transaction, requestId, topic);
@@ -93,7 +93,7 @@ public class RequestReceiver {
             jsonGenerator.writeStartObject();
             jsonGenerator.writeNumberField("requestId", requestId);
             jsonGenerator.writeStringField("topic", topic);
-            jsonGenerator.writeFieldName("transactionIdList");
+            jsonGenerator.writeFieldName("txnIdList");
             jsonGenerator.writeStartArray();
             for (UUID accountId : transactionIdList) {
                 jsonGenerator.writeString(accountId.toString());

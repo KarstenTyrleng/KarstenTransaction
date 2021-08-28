@@ -41,17 +41,17 @@ public class RepositoryImpl implements Repository {
         SqlSession session = sqlSessionFactory.openSession();
         TransactionMapper mapper = session.getMapper(TransactionMapper.class);
         mapper.createTransactionBase(transaction);
-        HashMap<UUID, BigMoney> accountMoneyCredited = transaction.getCreditSplits();
-        HashMap<UUID, BigMoney> accountMoneyDebited = transaction.getDebitSplits();
+        HashMap<UUID, BigMoney> creditSplits = transaction.getCreditSplits();
+        HashMap<UUID, BigMoney> debitSplits = transaction.getDebitSplits();
 
-        Set<UUID> accountMoneyCreditedKeys = accountMoneyCredited.keySet();
-        for (UUID accountId : accountMoneyCreditedKeys) {
-                mapper.createTransactionSide(new TransactionSide(transaction.getId(), accountId, "CREDIT", accountMoneyCredited.get(accountId)));
+        Set<UUID> accountCreditIdKeys = creditSplits.keySet();
+        for (UUID accountId : accountCreditIdKeys) {
+                mapper.createTransactionSplit(new TransactionSplit(transaction.getId(), accountId, "CREDIT", creditSplits.get(accountId)));
         }
 
-        Set<UUID> accountMoneyDebitedKeys = accountMoneyDebited.keySet();
-        for (UUID accountId : accountMoneyDebitedKeys) {
-            mapper.createTransactionSide(new TransactionSide(transaction.getId(), accountId, "DEBIT", accountMoneyDebited.get(accountId)));
+        Set<UUID> accountDebitIdKeys = debitSplits.keySet();
+        for (UUID accountId : accountDebitIdKeys) {
+            mapper.createTransactionSplit(new TransactionSplit(transaction.getId(), accountId, "DEBIT", debitSplits.get(accountId)));
         }
         session.commit();
         //TODO: wrap the whole code in transaction. Either everything goes well or all the DB entries roll back.
@@ -64,20 +64,20 @@ public class RepositoryImpl implements Repository {
 
         Transaction transaction = mapper.getTransactionBase(transactionId);
 
-        List<TransactionSide> creditSideList = mapper.getAllTransactionCreditSide(transactionId);
-        HashMap<UUID, BigMoney> accountMoneyCredited = new HashMap<>();
-        for (TransactionSide transactionSide : creditSideList) {
-            accountMoneyCredited.put(transactionSide.getAccountId(), transactionSide.getMoney());
+        List<TransactionSplit> creditSplitList = mapper.getAllTransactionCreditSplit(transactionId);
+        HashMap<UUID, BigMoney> creditSplits = new HashMap<>();
+        for (TransactionSplit transactionSplit : creditSplitList) {
+            creditSplits.put(transactionSplit.getAccountId(), transactionSplit.getMoney());
         }
 
-        List<TransactionSide> debitSideList = mapper.getAllTransactionDebitSide(transactionId);
-        HashMap<UUID, BigMoney> accountMoneyDebited = new HashMap<>();
-        for (TransactionSide transactionSide : debitSideList) {
-            accountMoneyDebited.put(transactionSide.getAccountId(), transactionSide.getMoney());
+        List<TransactionSplit> debitSplitList = mapper.getAllTransactionDebitSplit(transactionId);
+        HashMap<UUID, BigMoney> debitSplits = new HashMap<>();
+        for (TransactionSplit transactionSplit : debitSplitList) {
+            debitSplits.put(transactionSplit.getAccountId(), transactionSplit.getMoney());
         }
 
-        transaction.setCreditSplits(accountMoneyCredited);
-        transaction.setDebitSplits(accountMoneyDebited);
+        transaction.setCreditSplits(creditSplits);
+        transaction.setDebitSplits(debitSplits);
 
         return transaction;
     }

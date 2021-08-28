@@ -5,7 +5,7 @@
 
 <mapper namespace="io.github.tyrleng.karsten.transaction.infrastructure.repository.TransactionMapper">
 
-<!--    <resultMap id="transactionSideMap" type="transactionSide">-->
+<!--    <resultMap id="transactionSideMap" type="transactionSplit">-->
 <!--        <id property="accountId" column="ACCOUNT_ID" typeHandler="uuidHandler"/>-->
 <!--        <result property="money" column="MONEY" typeHandler="bigMoneyHandler"/>-->
 <!--        <result property=""-->
@@ -15,15 +15,15 @@
         INSERT INTO TRANSACTIONS VALUES (#{id}, #{dateCreated})
     </insert>
 
-    <insert id="createTransactionSide" parameterType="transactionSide">
+    <insert id="createTransactionSplit" parameterType="transactionSplit">
         INSERT INTO TRANSACTION_SIDE VALUES (#{transactionId}, #{transactionType}, #{accountId}, #{money})
     </insert>
 
-    <select id="getAllTransactionCreditSide" parameterType="uuid" resultType="transactionSide">
+    <select id="getAllTransactionCreditSplit" parameterType="uuid" resultType="transactionSplit">
         SELECT ACCOUNT_ID as accountId, MONEY  FROM TRANSACTION_SIDE WHERE TRANSACTION_ID = #{uuid} AND TYPE='CREDIT'
     </select>
 
-    <select id="getAllTransactionDebitSide" parameterType="uuid" resultType="transactionSide">
+    <select id="getAllTransactionDebitSplit" parameterType="uuid" resultType="transactionSplit">
         SELECT ACCOUNT_ID as accountId, money FROM TRANSACTION_SIDE WHERE TRANSACTION_ID = #{uuid} AND TYPE='DEBIT'
     </select>
 

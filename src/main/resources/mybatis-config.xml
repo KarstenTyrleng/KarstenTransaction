@@ -10,7 +10,7 @@
         <typeAlias alias="uuidHandler" type="io.github.tyrleng.karsten.transaction.infrastructure.repository.UuidHandler"/>
         <typeAlias alias="bigMoneyHandler" type="io.github.tyrleng.karsten.transaction.infrastructure.repository.BigMoneyHandler"/>
         <typeAlias alias="transaction" type="io.github.tyrleng.karsten.transaction.domain.Transaction"/>
-        <typeAlias alias="transactionSide" type="io.github.tyrleng.karsten.transaction.infrastructure.repository.TransactionSide"/>
+        <typeAlias alias="transactionSplit" type="io.github.tyrleng.karsten.transaction.infrastructure.repository.TransactionSplit"/>
     </typeAliases>
 
     <typeHandlers>
